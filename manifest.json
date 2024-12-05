@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "CodeRunner Fixer",
   "version": "1.0.0",
-  "description": "A simple DOM manipulator for badly designed CodeRunners",
+  "description": "A badly designed DOM manipulator for badly designed CodeRunners",
   "content_scripts": [
     {
       "js": ["scripts/fixCodeRunner.js"],
