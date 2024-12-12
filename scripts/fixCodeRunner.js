@@ -21,6 +21,7 @@ function resetContentLayout(mainContent) {
  * @param {HTMLElement} mainContent
  */
 async function addRevertButton(mainContent) {
+  const fixedDiv = document.getElementById("codeRunner-resize-container");
   window.addEventListener("resize", fixLayout);
   const button = document.createElement("button");
   button.onclick = () => {
@@ -35,13 +36,17 @@ async function addRevertButton(mainContent) {
   };
   button.textContent = "Resize Runner";
   button.id = "fixer-revert-btn";
-  const rowDiv = document.getElementsByClassName("row")[0];
-  rowDiv.append(button);
+  if (!fixedDiv) {
+    const rowDiv = document.getElementsByClassName("row")[0];
+    rowDiv.append(button);
+  } else {
+    fixedDiv.append(button);
+  }
 
   button.style.borderRadius = ".25rem";
   button.style.backgroundColor = "#005f9f";
   button.style.color = "#FFF";
-  button.style.margin = "0px";
+  button.style.marginBlock = "4px";
   button.style.padding = "0px";
   button.style.height = "40px";
 
@@ -63,46 +68,43 @@ function adjustFontSize(action, editor) {
 }
 
 /**
- * @param {HTMLElement} editor
+ * @param {HTMLDivElement} container
  */
-function addFontControls(editor) {
+function addFontControls(container) {
+  console.log("hi my here");
+  // const rowDiv = document.getElementsByClassName("row")[0];
   const plusButton = document.createElement("button");
-  plusButton.onclick = () => adjustFontSize("+", editor);
+  plusButton.onclick = () => adjustFontSize("+", container);
   plusButton.textContent = "+";
   // plusButton.style.right = "2%"
   const minusButton = document.createElement("button");
-  minusButton.onclick = () => adjustFontSize("-", editor);
+  minusButton.onclick = () => adjustFontSize("-", container);
   minusButton.textContent = "-";
   // plusButton.style.right = "5%"
   const buttons = [minusButton, plusButton];
   const buttonDiv = document.createElement("div");
-  buttonDiv.append(buttons);
   buttons.forEach((button) => {
     button.style.borderRadius = ".25rem";
     button.style.backgroundColor = "#005f9f";
     button.style.color = "#FFF";
-    button.style.margin = "0px";
+    button.style.marginBlock = "4px";
     button.style.padding = "0px";
     button.style.height = "40px";
+    buttonDiv.append(button);
   });
-  editor.append(buttonDiv);
-  // buttonDiv.style.position = "absolute";
-  // buttonDiv.style.top = "0px";
-  // buttonDiv.style.right = "2%";
+  container.append(buttonDiv);
+  buttonDiv.style.position = "fixed";
+  buttonDiv.style.top = "15%";
+  buttonDiv.style.left = "3%";
   buttonDiv.style.display = "flex";
-  buttonDiv.style.flexDirection = "row";
+  buttonDiv.style.flexDirection = "column";
+  // buttonDiv.style.backgroundColor = "red";
+  buttonDiv.style.border = "0px";
+  buttonDiv.id = "codeRunner-resize-container";
 }
 
 function fixLayout() {
-  const editors = document.querySelectorAll(".ace_content");
-  console.log("🚀 ~ fixLayout ~ editors:", editors.length);
-
-  // for (let i = 0; i < editors.length; i++) {
-  //   console.log("hi!!!");
-  //   addFontControls(editors[i]);
-  // }
   const mainContent = document.getElementById("page-content");
-  console.log("🚀 ~ fixLayout ~ mainContent:", mainContent);
   const quizNav = document.getElementById("theme_osiris-drawers-blocks");
   const contentRect = mainContent.getBoundingClientRect();
   const { width } = contentRect;
@@ -112,6 +114,7 @@ function fixLayout() {
     mainContent.style.position = "absolute";
     mainContent.style.left = "0";
     mainContent.style.width = asideRect.left ? `${asideRect.left}px` : `98vw`;
+    addFontControls(mainContent);
     return { mainContent, width };
   } else console.log("im dumb:(");
 }
