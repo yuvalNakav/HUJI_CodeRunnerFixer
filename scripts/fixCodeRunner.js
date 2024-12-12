@@ -20,7 +20,7 @@ function resetContentLayout(mainContent) {
 /**
  * @param {HTMLElement} mainContent
  */
-async function addRevertButton({ mainContent, width }) {
+async function addRevertButton(mainContent) {
   window.addEventListener("resize", fixLayout);
   const button = document.createElement("button");
   button.onclick = () => {
@@ -97,19 +97,21 @@ function fixLayout() {
   const editors = document.querySelectorAll(".ace_content");
   console.log("🚀 ~ fixLayout ~ editors:", editors.length);
 
-  for (let i = 0; i < editors.length; i++) {
-    console.log("hi!!!");
-    addFontControls(editors[i]);
-  }
+  // for (let i = 0; i < editors.length; i++) {
+  //   console.log("hi!!!");
+  //   addFontControls(editors[i]);
+  // }
   const mainContent = document.getElementById("page-content");
+  console.log("🚀 ~ fixLayout ~ mainContent:", mainContent);
   const quizNav = document.getElementById("theme_osiris-drawers-blocks");
   const contentRect = mainContent.getBoundingClientRect();
   const { width } = contentRect;
   const asideRect = quizNav && document.getElementById("theme_osiris-drawers-blocks")?.getBoundingClientRect();
-  if (mainContent && asideRect?.left) {
+
+  if (mainContent && asideRect) {
     mainContent.style.position = "absolute";
     mainContent.style.left = "0";
-    mainContent.style.width = `${asideRect.left}px`;
+    mainContent.style.width = asideRect.left ? `${asideRect.left}px` : `98vw`;
     return { mainContent, width };
   } else console.log("im dumb:(");
 }
