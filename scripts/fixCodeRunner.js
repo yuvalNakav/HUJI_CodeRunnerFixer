@@ -60,10 +60,11 @@ function fixLayout() {
   const contentRect = mainContent.getBoundingClientRect();
   const { width } = contentRect;
   const asideRect = quizNav && document.getElementById("theme_osiris-drawers-blocks")?.getBoundingClientRect();
-  if (mainContent && asideRect?.left) {
+
+  if (mainContent && asideRect) {
     mainContent.style.position = "absolute";
     mainContent.style.left = "0";
-    mainContent.style.width = `${asideRect.left}px`;
+    mainContent.style.width = asideRect.left ? `${asideRect.left}px` : `99vw`;
     return { mainContent, width };
   } else console.log("im dumb:(");
 }
